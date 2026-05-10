@@ -1,19 +1,13 @@
 import uvicorn
 from fastapi import FastAPI
+from web import explorer
 
 
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/gem/{name}")
-async def read_gem(name: str):
-    return {"name": name}
+app.include_router(explorer.router)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
