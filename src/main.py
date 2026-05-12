@@ -1,12 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
-from web import explorer
+from web import explorer, gem
 
 
 app = FastAPI()
-
-
 app.include_router(explorer.router)
+app.include_router(gem.router)
 
 
 if __name__ == "__main__":
