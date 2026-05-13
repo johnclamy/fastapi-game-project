@@ -31,18 +31,19 @@ _gems = [
 ]
 
 
-async def get_gems():
+async def get_gems() -> list[Gem]:
     """Returns a list of mock gems."""
     return _gems
 
 
 async def get_gem_by_name(name: str) -> Gem | None:
     """Returns a mock gem by name."""
-    for _gem in _gems:
-        if _gem.name == name:
-            return _gem
-
-    return None
+    if name is not None:
+        for _gem in _gems:
+            if _gem.name == name:
+                return _gem
+    else:
+        return None
 
 
 # Define the non-functional CRUD operations as placeholders
