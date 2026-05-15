@@ -21,8 +21,14 @@ def init():
 
 
 def row_to_model(row: tuple) -> Gem:
-    name, country_of_origin, area_of_discovery, color, value, description = row
-    return Gem(name, country_of_origin, area_of_discovery, color, value, description)
+    return Gem(
+        name=row[0],
+        country_of_origin=row[1],
+        area_of_discovery=row[2],
+        color=row[3],
+        value=row[4],
+        description=row[5]
+    )
 
 
 def model_to_dict(gem: Gem) -> dict:
