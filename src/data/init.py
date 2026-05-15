@@ -6,7 +6,7 @@ from sqlite3 import connect, Connection, Cursor, IntegrityError
 
 
 conn: Connection | None = None
-curs: Cursor | None = None
+curs: Cursor
 
 
 def get_db(name: str | None = None, reset: bool = False) -> None:
@@ -24,7 +24,7 @@ def get_db(name: str | None = None, reset: bool = False) -> None:
         db_dir = top_dir / "db"
         db_name = name or "gemquest.db"
         db_path = str(db_dir / db_name)
-        name = os.getenv("GEMQUEST_SQLITE_DB", db_name)
+        name = os.getenv("GEMQUEST_SQLITE_DB", db_path)
 
     conn = connect(name, check_same_thread=False)
     curs = conn.cursor()
