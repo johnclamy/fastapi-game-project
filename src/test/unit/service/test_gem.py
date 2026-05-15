@@ -14,17 +14,17 @@ sample = Gem(
 
 async def test_create():
     """Test adding a gem."""
-    reslt = await code.add(sample)
-    assert reslt == sample
+    result = await code.add(sample)
+    assert result == sample
 
 
 async def test_get_exists():
     """Test getting an existing gem by name."""
-    reslt = await code.get_gem_by_name(sample.name)
-    assert reslt == sample
+    result = await code.get_gem_by_name(sample.name)
+    assert result == sample
 
 
-async def test_get_not_exists():
+async def test_get_missing():
     """Test getting a non-existent gem by name."""
-    reslt = await code.get_gem_by_name("Turquoise")
-    assert reslt is None
+    result = await code.get_gem_by_name("Turquoise")
+    assert result is None

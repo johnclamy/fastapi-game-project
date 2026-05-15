@@ -1,5 +1,5 @@
 from model.gem import Gem
-from mockdata import gem as data
+import mockdata.gem as data
 
 
 async def get_gems() -> list[Gem]:
