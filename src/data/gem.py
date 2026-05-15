@@ -1,23 +1,17 @@
-import sqlite3
+from .init import conn, curs
 from model.gem import Gem
 
 
-DB_NAME = 'gem_quest.db'
-conn = sqlite3.connect(DB_NAME)
-curs = conn.cursor()
-
-
-def init():
-    curs.execute('''
-        CREATE TABLE gem (
-            name,
-            country_of_origin,
-            area_of_discovery,
-            color,
-            value,
-            description
-        )
-    ''')
+curs.execute("""
+    CREATE TABLE IF NOT EXISTS gem (
+        name TEXT PRIMARY KEY,
+        country_of_origin TEXT,
+        area_of_discovery TEXT,
+        color TEXT,
+        value INT,
+        description TEXT
+    )
+""")
 
 
 def row_to_model(row: tuple) -> Gem:
@@ -39,29 +33,20 @@ def get_one(name: str) -> Gem:
     qry = "SELECT * FROM gem WHERE name =:name"
     params = {"name": name}
     curs.execute(qry, params)
-    row = curs.fetchone()
 
-    return row_to_model(row)
+    return row_to_model(curs.fetchone())
 
 
-def get_all(name: str) -> list[Gem]:
+def get_all() -> list[Gem]:
     qry = "SELECT * FROM gem"
     curs.execute(qry)
-    rows = list(curs.fetchall())
 
-    return [row_to_model(row) for row in rows]
+    return [row_to_model(row) for row in curs.fetchall()]
 
 
-def create(gem: Gem) -> None:
+def create(gem: Gem) -> Gem | None:
     qry = '''
-        INSERT INTO gem (
-            name,
-            country_of_origin,
-            area_of_discovery,
-            color,
-            value,
-            description
-        ) VALUES (
+        INSERT INTO gem VALUES (
             :name,
             :country_of_origin,
             :area_of_discovery,
@@ -72,6 +57,8 @@ def create(gem: Gem) -> None:
     '''
     params = model_to_dict(gem)
     curs.execute(qry, params)
+
+    return get_one(gem.name)
 
 
 def modify(gem: Gem):
