@@ -95,7 +95,8 @@ def replace(gem: Gem) -> Gem | None:
     return get_one(gem.name)
 
 
-def delete(gem: Gem):
+def delete(gem: Gem) -> bool:
     qry = "DELETE FROM gem WHERE name =:name"
     params = {"name": gem.name}
-    curs.execute(qry, params)
+    res = curs.execute(qry, params)
+    return bool(res)
