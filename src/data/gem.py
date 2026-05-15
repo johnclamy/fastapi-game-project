@@ -61,12 +61,38 @@ def create(gem: Gem) -> Gem | None:
     return get_one(gem.name)
 
 
-def modify(gem: Gem):
-    return gem
+def modify(gem: Gem) -> Gem:
+    qry = '''
+        UPDATE gem SET
+            country_of_origin =:country_of_origin,
+            area_of_discovery =:area_of_discovery,
+            color =:color,
+            value =:value,
+            description =:description
+        WHERE name =:name
+    '''
+    params = model_to_dict(gem)
+    params["name"] = gem.name
+    _ = curs.execute(qry, params)
+
+    return get_one(gem.name)
 
 
-def replace(gem: Gem):
-    return gem
+def replace(gem: Gem) -> Gem | None:
+    qry = '''
+        REPLACE INTO gem VALUES (
+            :name,
+            :country_of_origin,
+            :area_of_discovery,
+            :color,
+            :value,
+            :description
+        )
+    '''
+    params = model_to_dict(gem)
+    curs.execute(qry, params)
+
+    return get_one(gem.name)
 
 
 def delete(gem: Gem):
